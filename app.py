@@ -1,6 +1,6 @@
 import requests
 import click
-from datetime import datetime
+import datetime
 import dateutil.parser
 
 BASE_URL = 'https://www.scorebat.com/video-api/v1/'
@@ -17,16 +17,19 @@ def sweaty_goals():
 @sweaty_goals.command()
 def matches():
     """List all cataloged APIs."""
-
+    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     response = requests.get(url=f'{BASE_URL}')
 
     if response.status_code == 200:
         for el in response.json():
-            formatted_date =  datetime.strptime(el['date'], '%d/%m/%y %H:%M:%S')
-            print('match:', el['title'])
-            print('date: ', formatted_date.year)
+            formatted_date = dateutil.parser.parse(el['date'])
+            d = datetime.datetime.strptime(f'{formatted_date.hour}:{formatted_date.minute}', "%H:%M")
+            int_day = datetime.date(year=formatted_date.year, month=formatted_date.month, day=formatted_date.day).weekday()
+            print('Match:', el['title'])
+            print('Date: ',  f'{days[int_day]} {formatted_date.month}/{formatted_date.day}, {d.strftime("%I:%M %p")}, {formatted_date.hour}')
+            print('League:', el['competition']['name'])
             # print('date:', datetime.strptime(el['date'], '%d/%m/%y %H:%M:%S'))
-            print('--------------------')
+            print('\n')
 
         # for i, entry in enumerate(response.json()['entries']):
         #     pretty_entry = '\n'.join(f'{k}: {v}' for k, v in entry.items()l8 poubkfhjnjejown am,lodjdsma,kdjms,ljfmd,loritjnrd,.elrotjmfd.'ptokgmfc,.x;cpfogijnvc.;fojncx.zxdkcm)
