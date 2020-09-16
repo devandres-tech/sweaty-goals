@@ -20,20 +20,23 @@ def matches():
     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     response = requests.get(url=f'{BASE_URL}')
 
+    print("{:<44} {:32} {:<1}".format('MATCH', 'DATE', 'COMPETITION'))
+    print('--------------------------------------------------------------------------------------------------------------------')
+    no_items = []
     if response.status_code == 200:
-        for el in response.json():
-            formatted_date = dateutil.parser.parse(el['date'])
-            d = datetime.datetime.strptime(f'{formatted_date.hour}:{formatted_date.minute}', "%H:%M")
-            int_day = datetime.date(year=formatted_date.year, month=formatted_date.month, day=formatted_date.day).weekday()
-            print('Match:', el['title'])
-            print('Date: ',  f'{days[int_day]} {formatted_date.month}/{formatted_date.day}, {d.strftime("%I:%M %p")}, {formatted_date.hour}')
-            print('League:', el['competition']['name'])
-            # print('date:', datetime.strptime(el['date'], '%d/%m/%y %H:%M:%S'))
-            print('\n')
+        for index, item in enumerate(response.json()):
+            no_items.append(index)
 
-        # for i, entry in enumerate(response.json()['entries']):
-        #     pretty_entry = '\n'.join(f'{k}: {v}' for k, v in entry.items()l8 poubkfhjnjejown am,lodjdsma,kdjms,ljfmd,loritjnrd,.elrotjmfd.'ptokgmfc,.x;cpfogijnvc.;fojncx.zxdkcm)
-        #     print(f'{i + 1}.\n{pretty_entry}\n')
+        reverse_no_items = sorted(no_items, key=int, reverse=True)
+        for item in reverse_no_items:
+            match_title = response.json()[item]['title']
+            competition = response.json()[item]['competition']['name']
+            formatted_date = dateutil.parser.parse(response.json()[item]['date'])
+            date_obj = datetime.datetime.strptime(f'{formatted_date.hour}:{formatted_date.minute}', "%H:%M")
+            int_day = datetime.date(year=formatted_date.year, month=formatted_date.month, day=formatted_date.day).weekday()
+            date_string = f'{days[int_day]} {formatted_date.month}/{formatted_date.day}, {date_obj.strftime("%I:%M %p")}'
+            print("{:<44} {:<32} {:<1}".format(match_title, date_string, competition))
+            print('--------------------------------------------------------------------------------------------------------------------')
     else:
         print(f'Could not get the APIs: {response.text}')
 
