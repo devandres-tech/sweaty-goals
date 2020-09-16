@@ -15,7 +15,7 @@ def sweaty_goals():
 @click.option('-t', '--match', help='Match title, ex: matches -t "PSG - Bayern Munich"')
 @sweaty_goals.command()
 def matches(match: str):
-    """Retrieves latest football matches, if match title is passed in then it navigates to URL."""
+    """Retrieves latest football matches, navigates to match URL if match title is passed in."""
     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     no_items = []
 
