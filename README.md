@@ -1,4 +1,4 @@
-# Sweaty Goals
+# Sweaty Goals ⚽
 
 Sweaty goals is CLI tool that retrieves the latest football (soccer) matches happening around the world. Never miss a 
 single game of football!
