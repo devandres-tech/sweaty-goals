@@ -1,19 +1,21 @@
+import webbrowser
+
 import requests
 import click
 import datetime
 import dateutil.parser
-import webbrowser
+# import webbrowser
 
 BASE_URL = 'https://www.scorebat.com/video-api/v1/'
 response = requests.get(url=f'{BASE_URL}')
 
 @click.group()
-def sweaty_goals():
+def cli():
     """A CLI App to stay up-to-date to with football."""
 
 
 @click.option('-t', '--match', help='Match title, ex: matches -t "PSG - Bayern Munich"')
-@sweaty_goals.command()
+@cli.command()
 def matches(match: str):
     """Retrieves latest football matches, navigates to match URL if match title is passed in."""
     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
@@ -46,4 +48,4 @@ def matches(match: str):
 
 
 if __name__ == '__main__':
-    sweaty_goals(prog_name='Sweaty Goals')
+    cli(prog_name='Sweaty Goals')
