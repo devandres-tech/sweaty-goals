@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "dev-js": "concurrently \"npx tsc --watch\" \"nodemon -q index.js\""
   },
   "repository": {
     "type": "git",
@@ -24,10 +25,15 @@
   },
   "homepage": "https://github.com/devandres-tech/sweaty-goals#readme",
   "dependencies": {
+    "axios": "^0.27.2",
+    "terminal-kit": "^2.5.1",
+    "underscore": "^1.13.4",
     "yargs": "^17.5.1"
   },
   "devDependencies": {
     "@types/node": "^18.7.3",
+    "@types/terminal-kit": "^1.34.1",
+    "@types/underscore": "^1.11.4",
     "@types/yargs": "^17.0.11",
     "concurrently": "^7.3.0",
     "nodemon": "^2.0.19",
