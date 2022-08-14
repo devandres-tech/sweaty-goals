@@ -1,0 +1,36 @@
+{
+  "name": "sweaty-goals",
+  "version": "1.0.0",
+  "description": "A CLI app that helps you keep track of the latest English Premier League games. Never leave your Terminal, useful for devs who don't want to open the browser to check current stats. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devandres-tech/sweaty-goals.git"
+  },
+  "keywords": [
+    "Football",
+    "CLI",
+    "EPL",
+    "Soccer"
+  ],
+  "author": "Andres Alcocer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devandres-tech/sweaty-goals/issues"
+  },
+  "homepage": "https://github.com/devandres-tech/sweaty-goals#readme",
+  "dependencies": {
+    "yargs": "^17.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.3",
+    "@types/yargs": "^17.0.11",
+    "concurrently": "^7.3.0",
+    "nodemon": "^2.0.19",
+    "typescript": "^4.7.4"
+  }
+}
