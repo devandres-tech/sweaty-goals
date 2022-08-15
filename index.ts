@@ -1,6 +1,6 @@
 import yargs from 'yargs'
 import axios from 'axios'
-import { terminal } from 'terminal-kit'
+import colors from 'colors'
 import _, { map } from 'underscore'
 
 yargs
@@ -26,19 +26,24 @@ yargs
     const res = await axios(config)
     const results = res.data.content.map(
       (item: { kickoff: { label: string } }) => {
-        item.kickoff.label = item.kickoff.label.slice(0, 14)
+        item.kickoff.label = item.kickoff.label.slice(0, 15).replace(',', '')
         return item
       }
     )
     const g = _.groupBy(results, (item) => item.kickoff.label)
-    Object.keys(g).forEach((item) => {
-      console.log('DATE -------', item)
-      g[item].forEach((result) => {
+    Object.keys(g).forEach((dateKey) => {
+      console.log(colors.bgMagenta(dateKey))
+
+      g[dateKey].forEach((result) => {
         let homeTeam = result.teams[0].team.shortName
-        let homeTeamScore = result.teams[0].score
+        let homeTeamScore = colors.cyan.bold(result.teams[0].score)
         let awayTeam = result.teams[1].team.shortName
-        let awayTeamScore = result.teams[1].score
-        console.log('res---', homeTeam, homeTeamScore, awayTeamScore, awayTeam)
+        let awayTeamScore = colors.cyan.bold(result.teams[1].score)
+        console.log(
+          `${homeTeam.padStart(
+            20
+          )} ${homeTeamScore} - ${awayTeamScore} ${awayTeam}`
+        )
       })
       console.log('\n')
     })

@@ -26,6 +26,7 @@
   "homepage": "https://github.com/devandres-tech/sweaty-goals#readme",
   "dependencies": {
     "axios": "^0.27.2",
+    "colors": "^1.4.0",
     "terminal-kit": "^2.5.1",
     "underscore": "^1.13.4",
     "yargs": "^17.5.1"
