@@ -2,6 +2,7 @@ import yargs from 'yargs'
 import axios from 'axios'
 import colors from 'colors'
 import _, { map } from 'underscore'
+import { getResults } from './api/index'
 
 yargs
   .scriptName('swg')
@@ -23,8 +24,8 @@ yargs
       },
     }
 
-    const res = await axios(config)
-    const results = res.data.content.map(
+    const res = await getResults()
+    const results = res?.data.content.map(
       (item: { kickoff: { label: string } }) => {
         item.kickoff.label = item.kickoff.label.slice(0, 15).replace(',', '')
         return item
