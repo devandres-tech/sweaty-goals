@@ -1,7 +1,7 @@
 import yargs from 'yargs'
 import colors from 'colors'
 import _, { map } from 'underscore'
-import { getResults, getFixtures } from './api/index'
+import { getResults, getFixtures, getStandings } from './api/index'
 
 yargs
   .scriptName('swg')
@@ -11,9 +11,8 @@ yargs
   .usage('Usage: $0 <command> [args]')
   .command('results', 'get latest results', {}, async (argv) => {
     const results: any = await getResults()
-
     Object.keys(results).forEach((dateKey) => {
-      console.log(colors.bgMagenta(dateKey))
+      console.log(`${colors.bgMagenta(dateKey)}`)
       results[dateKey].forEach((result: any) => {
         let homeTeam = result.teams[0].team.shortName
         let homeTeamScore = colors.cyan.bold(result.teams[0].score)
@@ -42,6 +41,19 @@ yargs
         })
         console.log('\n')
       })
+  })
+  .command('table', 'get current standings', {}, async () => {
+    console.log(`${'Position'.padEnd(11)}${'Club'}${'P'.padStart(26)} \n`)
+
+    let table = await getStandings()
+    table.forEach((entry: any, idx: number) => {
+      console.log(
+        `${entry.position.toString().padEnd(10)} ${entry.team.name.padEnd(
+          28
+        )} ${entry.overall.played.toString().padStart()}`
+      )
+      console.log(colors.dim('-'.repeat(44)))
+    })
   })
   .showHelpOnFail(true)
   .demandCommand(1, '')

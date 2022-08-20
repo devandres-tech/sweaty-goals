@@ -55,3 +55,25 @@ export const getFixtures = async () => {
     throw error
   }
 }
+
+export const getStandings = async () => {
+  var config = {
+    method: 'get',
+    url: 'https://footballapi.pulselive.com/football/compseasons/489/standings/',
+    headers: {
+      authority: 'footballapi.pulselive.com',
+      accept: '*/*',
+      'accept-language': 'en-US,en;q=0.9,es-MX;q=0.8,es;q=0.7,la;q=0.6',
+      'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      origin: 'https://www.premierleague.com',
+      referer: 'https://www.premierleague.com/',
+    },
+  }
+  let result: any
+  try {
+    result = await axios(config)
+    return result.data.tables[0].entries
+  } catch (error) {
+    throw error
+  }
+}
