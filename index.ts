@@ -1,8 +1,7 @@
 import yargs from 'yargs'
-import axios from 'axios'
 import colors from 'colors'
 import _, { map } from 'underscore'
-import { getResults } from './api/index'
+import { getResults, getFixtures } from './api/index'
 
 yargs
   .scriptName('swg')
@@ -11,31 +10,11 @@ yargs
   )
   .usage('Usage: $0 <command> [args]')
   .command('results', 'get latest results', {}, async (argv) => {
-    var config = {
-      method: 'get',
-      url: 'https://footballapi.pulselive.com/football/fixtures?comps=1&teams=127,1,2,130,131,4,6,7,34,9,26,10,11,12,23,15,20,21,25,38&compSeasons=489&page=0&pageSize=40&sort=desc&statuses=C&altIds=true',
-      headers: {
-        authority: 'footballapi.pulselive.com',
-        accept: '*/*',
-        'accept-language': 'en-US,en;q=0.9,es-MX;q=0.8,es;q=0.7,la;q=0.6',
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        origin: 'https://www.premierleague.com',
-        referer: 'https://www.premierleague.com/',
-      },
-    }
+    const results: any = await getResults()
 
-    const res = await getResults()
-    const results = res?.data.content.map(
-      (item: { kickoff: { label: string } }) => {
-        item.kickoff.label = item.kickoff.label.slice(0, 15).replace(',', '')
-        return item
-      }
-    )
-    const g = _.groupBy(results, (item) => item.kickoff.label)
-    Object.keys(g).forEach((dateKey) => {
+    Object.keys(results).forEach((dateKey) => {
       console.log(colors.bgMagenta(dateKey))
-
-      g[dateKey].forEach((result) => {
+      results[dateKey].forEach((result: any) => {
         let homeTeam = result.teams[0].team.shortName
         let homeTeamScore = colors.cyan.bold(result.teams[0].score)
         let awayTeam = result.teams[1].team.shortName
@@ -48,6 +27,21 @@ yargs
       })
       console.log('\n')
     })
+  })
+  .command('fixtures', 'get match fixtures', {}, async () => {
+    const fixtures = await getFixtures()
+    Object.keys(fixtures)
+      .reverse()
+      .forEach((fixtureDate) => {
+        console.log(colors.bgMagenta(fixtureDate))
+        fixtures[fixtureDate].forEach((fixture) => {
+          let homeTeam = fixture.teams[0].team.shortName
+          let bstDate = fixture.provisionalKickoff.label.split(',')[1]
+          let awayTeam = fixture.teams[1].team.shortName
+          console.log(`${homeTeam.padStart(20)} ${bstDate}  ${awayTeam}`)
+        })
+        console.log('\n')
+      })
   })
   .showHelpOnFail(true)
   .demandCommand(1, '')
