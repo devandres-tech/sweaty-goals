@@ -43,16 +43,38 @@ yargs
       })
   })
   .command('table', 'get current standings', {}, async () => {
-    console.log(`${'Position'.padEnd(11)}${'Club'}${'P'.padStart(26)} \n`)
+    console.log(
+      `${'Position'.padEnd(11)}${'Club'}${'MP'.padStart(26)}${'W'.padStart(
+        5
+      )}${'D'.padStart(5)}${'L'.padStart(5)} ${'GF'.padStart(
+        5
+      )} ${'GA'.padStart(5)} ${'GD'.padStart(5)} ${'Pts'.padStart(5)}\n`
+    )
 
     let table = await getStandings()
     table.forEach((entry: any, idx: number) => {
+      let goalDifference: string =
+        entry.overall.goalsDifference > 0
+          ? '+' + entry.overall.goalsDifference
+          : entry.overall.goalsDifference
       console.log(
         `${entry.position.toString().padEnd(10)} ${entry.team.name.padEnd(
           28
-        )} ${entry.overall.played.toString().padStart()}`
+        )} ${entry.overall.played.toString().padEnd(4)} ${entry.overall.won
+          .toString()
+          .padEnd(4)} ${entry.overall.drawn
+          .toString()
+          .padEnd(4)} ${entry.overall.lost
+          .toString()
+          .padEnd(5)} ${entry.overall.goalsFor
+          .toString()
+          .padEnd(5)} ${entry.overall.goalsAgainst
+          .toString()
+          .padEnd(4)} ${goalDifference
+          .toString()
+          .padEnd(5)} ${colors.bold.magenta(entry.overall.points)}`
       )
-      console.log(colors.dim('-'.repeat(44)))
+      console.log(colors.dim('-'.repeat(80)))
     })
   })
   .showHelpOnFail(true)

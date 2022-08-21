@@ -27,12 +27,13 @@
   "dependencies": {
     "axios": "^0.27.2",
     "colors": "^1.4.0",
+    "dotenv": "^16.0.1",
     "terminal-kit": "^2.5.1",
     "underscore": "^1.13.4",
     "yargs": "^17.5.1"
   },
   "devDependencies": {
-    "@types/node": "^18.7.3",
+    "@types/node": "^18.7.8",
     "@types/terminal-kit": "^1.34.1",
     "@types/underscore": "^1.11.4",
     "@types/yargs": "^17.0.11",
