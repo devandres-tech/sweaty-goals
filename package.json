@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A CLI app that helps you keep track of the latest English Premier League games. Never leave your Terminal, useful for devs who don't want to open the browser to check current stats. ",
   "main": "index.js",
+  "bin": {
+    "swg": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",

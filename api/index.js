@@ -1,9 +1,8 @@
-import axios from 'axios'
-import _, { map } from 'underscore'
-import dotEnv from 'dotenv'
-dotEnv.config()
+const axios = require('axios')
+const _ = require('underscore')
+require('dotenv').config()
 
-export const getResults = async () => {
+const getResults = async () => {
   var config = {
     method: 'get',
     url: `${process.env.BASE_URL}/fixtures?comps=1&teams=127,1,2,130,131,4,6,7,34,9,26,10,11,12,23,15,20,21,25,38&compSeasons=489&page=0&pageSize=40&sort=asc&statuses=C&altIds=true`,
@@ -13,19 +12,17 @@ export const getResults = async () => {
   }
   try {
     let res = await axios(config)
-    const results = res?.data.content.map(
-      (item: { kickoff: { label: string } }) => {
-        item.kickoff.label = item.kickoff.label.slice(0, 15).replace(',', '')
-        return item
-      }
-    )
+    const results = res?.data.content.map((item) => {
+      item.kickoff.label = item.kickoff.label.slice(0, 15).replace(',', '')
+      return item
+    })
     return _.groupBy(results, (item) => item.kickoff.label)
   } catch (error) {
     throw error
   }
 }
 
-export const getFixtures = async () => {
+const getFixtures = async () => {
   var config = {
     method: 'get',
     url: `${process.env.BASE_URL}/fixtures?comps=1&teams=127,1,2,130,131,4,6,7,34,9,26,10,11,12,23,15,20,21,25,38&compSeasons=489&page=0&pageSize=40&sort=asc&statuses=U,L&altIds=true`,
@@ -33,22 +30,20 @@ export const getFixtures = async () => {
       origin: 'https://www.premierleague.com',
     },
   }
-  let result: any
+  let result
   try {
     result = await axios(config)
-    let data = result?.data.content.map(
-      (item: { kickoff: { label: string } }) => {
-        item.kickoff.label = item.kickoff.label.slice(0, 15).replace(',', '')
-        return item
-      }
-    )
+    let data = result?.data.content.map((item) => {
+      item.kickoff.label = item.kickoff.label.slice(0, 15).replace(',', '')
+      return item
+    })
     return _.groupBy(data, (item) => item.kickoff.label)
   } catch (error) {
     throw error
   }
 }
 
-export const getStandings = async () => {
+const getStandings = async () => {
   var config = {
     method: 'get',
     url: `${process.env.BASE_URL}/compseasons/489/standings/?live=true`,
@@ -56,7 +51,7 @@ export const getStandings = async () => {
       origin: 'https://www.premierleague.com',
     },
   }
-  let result: any
+  let result
   try {
     result = await axios(config)
     return result.data.tables[0].entries
@@ -64,3 +59,5 @@ export const getStandings = async () => {
     throw error
   }
 }
+
+module.exports = { getStandings, getFixtures, getResults }

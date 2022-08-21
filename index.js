@@ -1,7 +1,8 @@
-import yargs from 'yargs'
-import colors from 'colors'
-import _, { map } from 'underscore'
-import { getResults, getFixtures, getStandings } from './api/index'
+#!/usr/bin/env node
+
+const yargs = require('yargs')
+const colors = require('colors')
+const api = require('./api/index')
 
 yargs
   .scriptName('swg')
@@ -10,10 +11,10 @@ yargs
   )
   .usage('Usage: $0 <command> [args]')
   .command('results', 'get latest results', {}, async (argv) => {
-    const results: any = await getResults()
+    const results = await api.getResults()
     Object.keys(results).forEach((dateKey) => {
       console.log(`${colors.bgMagenta(dateKey)}`)
-      results[dateKey].forEach((result: any) => {
+      results[dateKey].forEach((result) => {
         let homeTeam = result.teams[0].team.shortName
         let homeTeamScore = colors.cyan.bold(result.teams[0].score)
         let awayTeam = result.teams[1].team.shortName
@@ -28,7 +29,7 @@ yargs
     })
   })
   .command('fixtures', 'get match fixtures', {}, async () => {
-    const fixtures = await getFixtures()
+    const fixtures = await api.getFixtures()
     Object.keys(fixtures)
       .reverse()
       .forEach((fixtureDate) => {
@@ -51,9 +52,9 @@ yargs
       )} ${'GA'.padStart(5)} ${'GD'.padStart(5)} ${'Pts'.padStart(5)}\n`
     )
 
-    let table = await getStandings()
-    table.forEach((entry: any, idx: number) => {
-      let goalDifference: string =
+    let table = await api.getStandings()
+    table.forEach((entry) => {
+      let goalDifference =
         entry.overall.goalsDifference > 0
           ? '+' + entry.overall.goalsDifference
           : entry.overall.goalsDifference
